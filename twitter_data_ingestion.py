@@ -5,7 +5,6 @@ from tweepy.streaming import StreamListener
 import json
 import twitter_config
 import pykafka
-from afinn import Afinn
 import sys
 
 
@@ -13,7 +12,7 @@ class TweetListener(StreamListener):
     def __init__(self):
         # on se connecte vers le serveur kafka et instancie l'objet producer du topique twitter_samsung
         self.client = pykafka.KafkaClient("localhost:9092")
-        self.producer = self.client.topics[bytes('twitter_samsung', 'ascii')].get_producer()
+        self.producer = self.client.topics[bytes('twitter_input', 'ascii')].get_producer()
 
     def on_data(self, data):
         try:
@@ -23,7 +22,7 @@ class TweetListener(StreamListener):
             json_send_data = json.loads(send_data)
             json_send_data['text'] = json_data['text']
 
-            print(json_send_data['text'], " >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ")
+            print(json_send_data['text'])
 
             self.producer.produce(bytes(json.dumps(json_send_data), 'ascii'))
             return True
