@@ -20,6 +20,7 @@ import json
 import pykafka
 from afinn import Afinn
 
+
 def fun(senti_val):
     try:
         if senti_val < 0:
@@ -46,14 +47,13 @@ def send_data(text):
     print(json_send_data['text'], ">>>>>>>>>>", json_send_data['sentiment_value'], ">>>>>>>>>>",
           json_send_data['status'])
     coll_tweets.insert_one(json_send_data)
-    #coll_tweets.update(json_send_data)
+    # coll_tweets.update(json_send_data)
     print(json_send_data)
     connection.close()
     return json_send_data['status']
 
 
 def send_status(partition):
-
     connection = MongoClient('mongodb://admin:dba@ds012178.mlab.com:12178/twitter_db')
     db = connection.twitter_db
     col_status = db.status
