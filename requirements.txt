@@ -1,0 +1,4 @@
+pip3  install tweepy
+sudo pip3 install pykafka
+sudo pip3 install afinn
+wget http://central.maven.org/maven2/org/apache/spark/spark-sql-kafka-0-10_2.11/2.1.1/spark-sql-kafka-0-10_2.11-2.1.1.jar

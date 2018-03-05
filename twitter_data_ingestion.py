@@ -17,14 +17,9 @@ class TweetListener(StreamListener):
     def on_data(self, data):
         try:
             json_data = json.loads(data)
+            print(json_data['text'])
 
-            send_data = '{}'
-            json_send_data = json.loads(send_data)
-            json_send_data['text'] = json_data['text']
-
-            print(json_send_data['text'])
-
-            self.producer.produce(bytes(json.dumps(json_send_data), 'ascii'))
+            self.producer.produce(bytes(data, "ascii"))
             return True
         except KeyError:
             return True
@@ -44,9 +39,5 @@ if __name__ == "__main__":
     # connexion avec l'api twitter
     auth = OAuthHandler(twitter_config.CONSUMER_KEY, twitter_config.CONSUMER_SECRET)
     auth.set_access_token(twitter_config.ACCESS_TOKEN, twitter_config.ACCESS_TOKEN_SECRET)
-
-    # create AFINN object for sentiment analysis
-    afinn = Afinn()
-
     twitter_stream = Stream(auth, TweetListener())
     twitter_stream.filter(languages=['en'], track=[word])
