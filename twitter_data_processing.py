@@ -40,9 +40,12 @@ def send_data(text):
 
     data = '{}'
     json_send_data = json.loads(data)
-    json_send_data['text'] = text
-    json_send_data['sentiment_value'] = afinn.score(text)
+    json_send_data['text'] = text['text']
+    json_send_data['sentiment_value'] = afinn.score(text['text'])
     json_send_data['status'] = fun(json_send_data['sentiment_value'])
+    json_send_data['location'] = text['user']['location']
+    if json_send_data['location'] == "null":
+        json_send_data['location'] = ""
 
     print(json_send_data['text'], ">>>>>>>>>>", json_send_data['sentiment_value'], ">>>>>>>>>>",
           json_send_data['status'])
@@ -82,7 +85,7 @@ if __name__ == "__main__":
 
     # Count the number of tweets per User
     user_counts = parsed.map(
-        lambda tweet: (send_data(tweet['text']), 1)).reduceByKey(lambda x, y: x + y)
+        lambda tweet: (send_data(tweet), 1)).reduceByKey(lambda x, y: x + y)
     user_counts.foreachRDD(lambda rdd: rdd.foreachPartition(send_status))
 
     # Print the User tweet counts

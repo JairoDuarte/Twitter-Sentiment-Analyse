@@ -6,6 +6,7 @@ import json
 import twitter_config
 import pykafka
 import sys
+from pymongo import MongoClient
 
 
 class TweetListener(StreamListener):
@@ -13,11 +14,20 @@ class TweetListener(StreamListener):
         # on se connecte vers le serveur kafka et instancie l'objet producer du topique twitter_samsung
         self.client = pykafka.KafkaClient("localhost:9092")
         self.producer = self.client.topics[bytes('twitter_input', 'ascii')].get_producer()
+        self.connection = MongoClient('mongodb://admin:dba@ds012178.mlab.com:12178/twitter_db')
+        self.db = self.connection.twitter_db
+        self.coll_tweets = self.db.data
 
     def on_data(self, data):
         try:
             json_data = json.loads(data)
+            data = '{}'
+            json_send_data = json.loads(data)
+            json_send_data['location'] = json_data['user']['location']
+            json_send_data['status'] = 'POSITIVE'
+            json_send_data['text'] = json_data['text']
             print(json_data['text'])
+            self.coll_tweets.insert_one(json_send_data)
 
             self.producer.produce(bytes(data, "ascii"))
             return True
