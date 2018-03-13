@@ -1,8 +1,6 @@
 """
   Created by Jairo Duarte on 22/02/2018.
 """
-import time
-import tweepy
 from tweepy import OAuthHandler
 from tweepy import Stream
 from tweepy.streaming import StreamListener
@@ -36,7 +34,6 @@ class TweetListener(StreamListener):
 
             # envois des données twitter vers le consumer
             self.producer.produce(json.dumps(json_data).encode())
-
             return True
         except KeyError:
             return True
@@ -48,7 +45,7 @@ class TweetListener(StreamListener):
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: PYSPARK_PYTHON=python3 $SPARK_HOME/bin/spark-submit file.py <WORD>", file=sys.stderr)
+        print("Usage: PYSPARK_PYTHON=python3 spark-submit file.py <WORD>", file=sys.stderr)
         exit(-1)
 
     word = sys.argv[1]
