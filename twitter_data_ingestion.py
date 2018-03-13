@@ -30,11 +30,9 @@ class TweetListener(StreamListener):
     def on_data(self, data):
         try:
             json_data = json.loads(data)
-            location = getlocation(json_data['user']['location'])
-            json_data['user']['location'] = location
-            #json_data['user']['location'] =  json_data['text'] = p.clean(json_data['text'])
-            # print(type(data))
-            print(json_data['text'], '>>>>>', json_data['user']['location'])
+            json_data['user']['location'] = getlocation(json_data['user']['location'])
+            json_data['text'] = p.clean(json_data['text'])
+            print(json_data['text'], '>>>>', json_data['user']['location'])
 
             # envois des données twitter vers le consumer
             self.producer.produce(json.dumps(json_data).encode())

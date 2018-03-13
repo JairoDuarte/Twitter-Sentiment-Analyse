@@ -38,7 +38,7 @@ def send_data(text):
         json_send_data['sentiment_value'] = afinn.score(text['text'])
         json_send_data['status'] = fun(json_send_data['sentiment_value'])
         json_send_data['location'] = text['user']['location']
-        if json_send_data['location'] == "null":
+        if json_send_data['location'] == "null" or json_send_data['location'] == "None":
             json_send_data['location'] = ""
 
         print(json_send_data['text'], ">>>", json_send_data['sentiment_value'], ">>>", json_send_data['status'])
