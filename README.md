@@ -12,5 +12,10 @@ kafka-server-start.sh $KAFKA_HOME/config/server.properties
 PYSPARK_PYTHON=python3 spark-submit twitter_data_ingestion.py "Donald Trump"
 
 4-Run twitter_data_processing.py (Start Consumer)
-PYSPARK_PYTHON=python3 spark-submit --packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.2.0 twitter_data_processing.py
 PYSPARK_PYTHON=python3 spark-submit --packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.2.0  twitter_data_processing.py
+
+![alt text](https://github.com/JairoDuarte/Twitter-Sentiment-Analyse/img/1.png)
+
+Visualisation Dashboard:
+
+![alt text](https://github.com/JairoDuarte/Twitter-Sentiment-Analyse/img/2.png)
